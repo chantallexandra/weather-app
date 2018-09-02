@@ -7,7 +7,7 @@ require('dotenv').config();
 
 var locationRouter = require('./routes/location');
 
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 8080;
 
 app.use(express.static(path.join(__dirname, 'build')));
 
