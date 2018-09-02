@@ -3,7 +3,6 @@ import Input from './components/input/input';
 import WeatherData from './components/weatherData/weatherData';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/animate.css'
 import './App.css';
 
 
