@@ -92,27 +92,12 @@ exports.weather_get_latlong = (req, res) => {
 }
 
 exports.weather_get_location = (req,res) => {
-
 	var location = req.params.location
+	var lat = req.query.lat;
+	var long = req.query.long;
 
-	axios.get("http://www.mapquestapi.com/geocoding/v1/address",{
-		params: {
-			key: mapquestKey,
-			location: location,
-			responseType: "json"
-		}
-	}).then((response)=>{
-
-		var latLng = response.data.results[0].locations[0].latLng;
-		var lat = latLng.lat;
-		var long = latLng.lng;
-
-		var fulllocation = formatGeocode(response);
-			
-		return getWeather(fulllocation, lat, long);
-
-	}).then((response)=>{
-
+	getWeather(location, lat, long)
+	.then((response)=>{
 		res.json(response);
 
 	}).catch((err) => {

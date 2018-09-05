@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Input from './components/input/input';
 import WeatherData from './components/weatherData/weatherData';
+import LocationResults from './components/locationResults/locationResults';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-
 
 class App extends Component {
 
@@ -14,62 +14,88 @@ class App extends Component {
     this.state = {
         isLoading: true,
         error: false,
-        data: null
+        data: null,
+        chosenLocation: false,
+        locationResults: null
     }
 
   }
 
+  //find weather from location chosen from list
+  selectLocation = (id, location) => {
+    var latLng = this.state.locationResults[id].latLng;
+    this.setState({chosenLocation: true, isLoading: true});
+    var params = `${location}?lat=${latLng.lat}&long=${latLng.lng}`;
+    this.fetchWeather(params,"string");
+  }
+
+  //user input to get locations
   setLocation = (input) => {
     this.setState({isLoading: true, error: false});
-   
     input = input.trim();
-
+    //if user input is blank, find their current location
     if(input === ""){
-      this.fetchLocation();
+      this.fetchUserLocation();
     }else{
-      this.fetchWeather(input, "string");
-  
+      this.setState({chosenLocation: false});
+      this.fetchPossibleLocations(input);
     }
   }
 
+  //fetch weather from location given in specified format
   fetchWeather = (location, locationType) => {
-    var url = locationType === "coords" ? `/weather/coords?${location}` : `/weather/${location}`
-
+    var url = locationType === "coords" ? `/weather/coords?${location}` : `weather/${location}`
     fetch(url)
     .then(response => response.json())
-    .then(response => {
-      if(response.ok){
-          this.setState({data: response, isLoading: false, error: false});
+    .then(json => {
+      if(json.ok){
+          this.setState({data: json, isLoading: false, error: false, chosenLocation: true});
       }else{
           this.setState({isLoading: false, error: true});
       }
     }).catch((err) => {
       this.setState({isLoading: false, error: true});
     });
-    
+  }
 
+  //calls api to get up to 10 possible locations corresponding to input
+  fetchPossibleLocations = (userInput) => {
+    var url = `/location/${userInput}`;
+    fetch(url)
+    .then(response => response.json())
+    .then(json => {
+      if(json.length === 0){
+        this.setState({error: true});
+      }else if(json.length === 1){
+        var latLng = json[0].latLng
+        var params = `lat=${latLng.lat}&long=${latLng.lng}`;
+        this.fetchWeather(params, "coords");
+      }else{
+        this.setState({locationResults: json, isLoading: false, error: false});
+      }
+    }).catch((err) => {
+      this.setState({isLoading: false, error: true});
+    });
   }
 
   //use geolocation to find user's lat and long coords
-  fetchLocation = () => {
+  fetchUserLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        var location = `lat=${position.coords.latitude}&long=${position.coords.longitude}`;
-        this.fetchWeather(location, "coords");
-        
+        var params = `lat=${position.coords.latitude}&long=${position.coords.longitude}`;
+        this.fetchWeather(params, "coords");
       });
     }else{
-      this.setState({error: true});
+      this.setState({error: true, isLoading: false});
     }
   }
 
   componentDidMount(){
-    this.fetchLocation();
+    this.fetchUserLocation();
   }
 
-
   render() {
-    const { data, isLoading, error } = this.state;
+    const { data, isLoading, error, chosenLocation, locationResults } = this.state;
     var inside;
 
     if(error){
@@ -84,6 +110,12 @@ class App extends Component {
                    <circle id="loading-inner" cx="75" cy="75" r="60"/>
                 </svg>
            </div>);
+    }else if(!chosenLocation && locationResults.length > 1){
+      inside = 
+      (<div className="center mt-2">
+        <LocationResults results={locationResults} selectLocation={this.selectLocation}/>
+      </div>)
+
     }else if(data){
       inside = (
         <div>

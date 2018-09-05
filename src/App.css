@@ -111,6 +111,17 @@ body, html {
     text-align: right;
     width: 75px; }
 
+.results {
+  min-width: 500px;
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  transition: all .3s; }
+  .results:hover {
+    border-color: rgba(255, 255, 255, 0.9);
+    padding-left: 15px; }
+
 .summary.date {
   color: rgba(255, 255, 255, 0.5);
   text-align: right;
