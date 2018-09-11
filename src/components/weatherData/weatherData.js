@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Icon from './icon/icon';
+import Icon from '../icon/icon';
 import Temperature from './temperature/temperature';
 import Summary from './summary/summary';
 
@@ -14,17 +14,17 @@ class WeatherData extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, tempSetting, changeSetting } = this.props;
 
     return (
       <div className="app container">
         <div className="row">
           <div className="col mt-4">
-            <div> 
-              <Icon iconName={data.icon}/>
+            <div className="mb-2"> 
+              <Icon iconName={data.icon} classnames={"animatedhover temp-icon"}/>
             </div>
             <div>
-              <Temperature temp={data.temperature} feelslike={data.feelslike}/>
+              <Temperature temp={data.temperature} feelslike={data.feelslike} tempSetting={tempSetting} changeSetting={changeSetting}/>
             </div>
           </div>
 

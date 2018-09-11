@@ -1,4 +1,5 @@
 import React from 'react';
+import { convertFtoC, formatNumber } from '../../utils'
 
 class Temperature extends React.Component {
 	constructor(props){
@@ -8,53 +9,26 @@ class Temperature extends React.Component {
 			tempF : null,
 			feelslikeC : null,
 			feelslikeF : null,
-			tempSetting : "C"
-		}
-	}
-
-	//converts temperature in Fahrenheit to Celcius
-	convertFtoC = (temp) => {
-		return (temp - 32) * 5/9;
-	}
-
-	convertCtoF = (temp) => {
-		return (temp * 9/5) + 32;
-	}
-
-	formatTemp = (temp) => {
-		return Math.round(temp);
-	}
-
-	handleChange = (e) => {
-		var id = e.target.id;
-
-		if(this.state.tempSetting !== id){
-			this.setState({tempSetting: e.target.id});
-			var selectedTemp = document.getElementById(e.target.id);
-			var deselectedTemp = e.target.id === "F" ? document.getElementById("C") : document.getElementById("F");
-
-			selectedTemp.classList.remove("deselected");
-			deselectedTemp.classList.add("deselected");		
 		}
 	}
 
 	componentDidMount(){
-		var far = this.formatTemp(this.props.temp);
-		var cel = this.formatTemp(this.convertFtoC(this.props.temp));
-		var feelF = this.formatTemp(this.props.feelslike);
-		var feelC = this.formatTemp(this.convertFtoC(this.props.feelslike));
+		var far = formatNumber(this.props.temp);
+		var cel = formatNumber(convertFtoC(this.props.temp));
+		var feelF = formatNumber(this.props.feelslike);
+		var feelC = formatNumber(convertFtoC(this.props.feelslike));
 		this.setState({tempF: far, tempC: cel, feelslikeF: feelF, feelslikeC: feelC});
 	}
 
 
 	render(){
-		var temperature = this.state.tempSetting === "F" ? this.state.tempF : this.state.tempC;
-		var feelslike = this.state.tempSetting === "F" ? this.state.feelslikeF : this.state.feelslikeC;
+		var temperature = this.props.tempSetting === "F" ? this.state.tempF : this.state.tempC;
+		var feelslike = this.props.tempSetting === "F" ? this.state.feelslikeF : this.state.feelslikeC;
 
 		return(
 			<div>
 				<div className="left-column mx-auto">
-					<div className="center temperature inline-block number">{temperature}</div><p className="form temperature inline">&deg;<span id="C" onClick={this.handleChange}>C</span> | <span className="deselected" id="F" onClick={this.handleChange}>F</span></p>
+					<div className="center temperature inline-block number">{temperature}</div><p className="form temperature inline">&deg;<span id="C" onClick={this.props.changeSetting}>C</span> | <span className="deselected" id="F" onClick={this.props.changeSetting}>F</span></p>
 				</div>
 
 				<div className="center left-column mx-auto">
