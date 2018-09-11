@@ -10,8 +10,8 @@ class Icon extends React.Component {
 
 	render(){
 		return(
-			<div className="center mb-2">
-				<img id="temp-icon" className="animatedhover" src={require(`./weather-icons/${this.state.icon}.svg`)} alt="weather icon"/> 
+			<div className="center">
+				<img className={this.props.classnames} src={require(`./weather-icons/${this.state.icon}.svg`)} alt="weather icon"/> 
 			</div>
 		);
 	}
