@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Input from './components/input/input';
 import WeatherData from './components/weatherData/weatherData';
 import LocationResults from './components/locationResults/locationResults';
+import Week from './components/week/week';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -16,9 +17,24 @@ class App extends Component {
         error: false,
         data: null,
         chosenLocation: false,
-        locationResults: null
+        locationResults: null,
+        tempSetting : "C"
     }
 
+  }
+
+  //Toggle between degrees F and C
+  changeTempSetting = (e) => {
+    var id = e.target.id;
+
+    if(this.state.tempSetting !== id){
+      this.setState({tempSetting: e.target.id});
+      var selectedTemp = document.getElementById(e.target.id);
+      var deselectedTemp = e.target.id === "F" ? document.getElementById("C") : document.getElementById("F");
+
+      selectedTemp.classList.remove("deselected");
+      deselectedTemp.classList.add("deselected");   
+    }
   }
 
   //find weather from location chosen from list
@@ -97,7 +113,7 @@ class App extends Component {
   render() {
     const { data, isLoading, error, chosenLocation, locationResults } = this.state;
     var inside;
-
+    var weeklyWeather = null;
     if(error){
       inside = 
       (<div className="center">
@@ -110,7 +126,7 @@ class App extends Component {
                    <circle id="loading-inner" cx="75" cy="75" r="60"/>
                 </svg>
            </div>);
-    }else if(!chosenLocation && locationResults.length > 1){
+    }else if(!chosenLocation && locationResults && locationResults.length > 1){
       inside = 
       (<div className="center mt-2">
         <LocationResults results={locationResults} selectLocation={this.selectLocation}/>
@@ -123,8 +139,19 @@ class App extends Component {
             <p className="summary location m-0">{data.location}</p> 
             <hr className="mt-0 mb-0" /> 
           </div>      
-          <WeatherData data={data}/>
+          <WeatherData data={data} tempSetting={this.state.tempSetting} changeSetting={this.changeTempSetting}/>
         </div>);
+
+      weeklyWeather = (
+        <div className="row mt-5">
+          <div className="col">
+          </div>
+          <div className="col-9">
+            <Week data={this.state.data.weekly} tempSetting={this.state.tempSetting} changeSetting={this.changeTempSetting}/>
+          </div>
+          <div className="col">
+          </div>
+      </div>);
 
     }else{
       inside = 
@@ -149,6 +176,7 @@ class App extends Component {
           <div className="col">
           </div>
       </div>
+      {weeklyWeather}
       </div>
     );
   }

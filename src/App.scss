@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway");
+$turquoise: #73cebe;
+$darkGrey: #403c3c;
 
 body, html{
   width:100%;
   margin: 0;
-  background: #73cebe;
+  background: $turquoise;
   color: white;
   font-size: 130%;
 
@@ -17,7 +19,7 @@ body, html{
 }
 
 #root{
-  background: #73cebe;
+  background: $turquoise;
   color: white;
   font-family: 'Raleway', sans-serif;
 }
@@ -70,7 +72,7 @@ body, html{
     animation: pulse 1s;
 }
 
-#temp-icon{
+.temp-icon{
   width: 100px; 
   height: 100px;
 }
@@ -178,17 +180,38 @@ body, html{
     font-size: 80%;
   }
   &.header {
-    color: #403c3c;
+    color: $darkGrey;
     opacity: 0.5;
   }
 
   &.subheader {
-      color: #403c3c;
+      color: $darkGrey;
       opacity: 0.35;
   }
 
   &.location {
     text-transform: capitalize;
+  }
+}
+
+.weekly{
+  &.day{
+    font-size: 110%;
+    letter-spacing: 1px;
+  }
+  &.date{
+    font-size: 70%;
+    color: rgba(255,255,255,0.6);
+  }
+  &.icon{
+    width: 50px;
+    height:50px;
+  }
+  &.max{
+    font-size: 150%
+  }
+  &.min{
+    color: rgba(255,255,255,0.6);
   }
 }
 

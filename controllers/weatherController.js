@@ -9,20 +9,22 @@ getWeather = (location, lat, long) => {
 	return new Promise((resolve, reject) => {
 		axios.get(`https://api.darksky.net/forecast/${darkskyKey}/${lat},${long}`)
 		.then((response) => {
-			var data = response.data.currently;
+			var currently = response.data.currently;
+			var daily = response.data.daily;
 
 			var temperatureData = {
 				ok: true,
 				location,
-				temperature: data.temperature,
-				summary: data.summary,
-				feelslike: data.apparentTemperature,
-				precipitation: data.precipType,
-				precipProb: data.precipProbability,
-				icon: data.icon,
-				humidity: data.humidity,
-				wind: data.windSpeed,
-				cloud: data.cloudCover
+				temperature: currently.temperature,
+				summary: currently.summary,
+				feelslike: currently.apparentTemperature,
+				precipitation: currently.precipType,
+				precipProb: currently.precipProbability,
+				icon: currently.icon,
+				humidity: currently.humidity,
+				wind: currently.windSpeed,
+				cloud: currently.cloudCover,
+				weekly: daily.data
 			};
 			resolve(temperatureData);
 		}).catch((err)=>{

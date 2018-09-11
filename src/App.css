@@ -53,7 +53,7 @@ body, html {
   -webkit-animation: pulse 1s;
   animation: pulse 1s; }
 
-#temp-icon {
+.temp-icon {
   width: 100px;
   height: 100px; }
 
@@ -137,6 +137,24 @@ body, html {
 
 .summary.location {
   text-transform: capitalize; }
+
+.weekly.day {
+  font-size: 110%;
+  letter-spacing: 1px; }
+
+.weekly.date {
+  font-size: 70%;
+  color: rgba(255, 255, 255, 0.6); }
+
+.weekly.icon {
+  width: 50px;
+  height: 50px; }
+
+.weekly.max {
+  font-size: 150%; }
+
+.weekly.min {
+  color: rgba(255, 255, 255, 0.6); }
 
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 @-webkit-keyframes pulse {
