@@ -20,6 +20,7 @@
   "scripts": {
     "start": "node server.js",
     "postinstall": "npm run build",
+    "heroku-postbuild": "npm run build",
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
